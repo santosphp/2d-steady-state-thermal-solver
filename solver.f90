@@ -3,8 +3,6 @@ module solver
 contains
 
   subroutine solve_system(x, k, T_left, T_right, T, N)
-    !f2py intent(in) x, k, T_left, T_right, N
-    !f2py intent(out) T
     integer, intent(in) :: N
     real, intent(in) :: x(N), k(N)
     real, intent(in) :: T_left, T_right
