@@ -13,7 +13,7 @@ tol = 1e-4                # Tolerância para convergência do solver
 # A rotina `heated_plate_solver`, implementada em Fortran, retorna a solução convergida.
 T = heated_plate_mod.heated_plate_solver(m, n, top, bottom, left, right, tol)
 
-plt.imshow(T, cmap='hot', extent=[0,1,0,1])
+plt.imshow(T, cmap='hot', extent=[0,1,0,1], origin='upper')
 plt.colorbar(label='Temperatura')
 plt.title('Distribuição Térmica 2D em Regime Permanente')
 plt.xlabel('X (Normalizado) ')
