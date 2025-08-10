@@ -11,7 +11,7 @@ T = np.zeros((m, n), order='F', dtype=np.float64)
 
 T = heated_plate_mod.heated_plate_solver(m, n, top, bottom, left, right, tol)
 
-plt.imshow(T, origin='lower', cmap='hot', extent=[0,1,0,1])
+plt.imshow(T, cmap='hot', extent=[0,1,0,1])
 plt.colorbar(label='Temperature')
 plt.title('2D Steady-State Heat Distribution')
 plt.xlabel('X')
