@@ -4,7 +4,7 @@ module heated_plate_mod
 !
 !  Purpose:
 !
-!    MAIN is the main program for HEATED_PLATE_WORKSHARE.
+!    Provide a 2d stead-state thermal solver.
 !
 !  Discussion:
 !
@@ -17,16 +17,16 @@ module heated_plate_mod
 !    The physical region, and the boundary conditions, are suggested
 !    by this diagram;
 !
-!                   W = 0
+!                   T = 0
 !             +------------------+
 !             |                  |
-!    W = 100  |                  | W = 100
+!    T = 100  |                  | T = 100
 !             |                  |
 !             +------------------+
-!                   W = 100
+!                   T = 100
 !
 !    The region is covered with a grid of M by N nodes, and an N by N
-!    array W is used to record the temperature.  The correspondence between
+!    array T is used to record the temperature.  The correspondence between
 !    array indices and locations in the region is suggested by giving the
 !    indices of the four corners:
 !
@@ -41,7 +41,7 @@ module heated_plate_mod
 !    The steady state solution to the discrete heat equation satisfies the
 !    following condition at an interior grid point:
 !
-!      W[Central] = (1/4) * ( W[North] + W[South] + W[East] + W[West] )
+!      T[Central] = (1/4) * ( T[North] + T[South] + T[East] + T[West] )
 !
 !    where "Central" is the index of the grid point, "North" is the index
 !    of its immediate neighbor to the "north", and so on.
@@ -51,7 +51,7 @@ module heated_plate_mod
 !    average of its 4 neighbors - in other words, by using the condition
 !    as an ASSIGNMENT statement:
 !
-!      W[Central]  <=  (1/4) * ( W[North] + W[South] + W[East] + W[West] )
+!      T[Central]  <=  (1/4) * ( T[North] + T[South] + T[East] + T[West] )
 !
 !    If this process is repeated often enough, the difference between 
 !    successive estimates of the solution will go to zero.
@@ -64,14 +64,15 @@ module heated_plate_mod
 !
 !    This code is distributed under the GNU LGPL license. 
 !
-!  Modified:
+!  First modified:
 !
 !    15 July 2010
 !
 !  Author:
 !
 !    Original FORTRAN90 version by Michael Quinn.
-!    This version by John Burkardt.
+!    First modified by John Burkardt.
+!    Lastly modified by Pedro H. Santos P.
 !
 !  Reference:
 !
@@ -81,7 +82,7 @@ module heated_plate_mod
 !    ISBN13: 978-0071232654,
 !    LC: QA76.73.C15.Q55.
 !
-!  Local parameters:
+!  Local variables:
 !
 !    Local, real ( kind = 8 ) DIFF, the norm of the change in the solution from 
 !    one iteration to the next.
@@ -89,10 +90,12 @@ module heated_plate_mod
 !    Local, real ( kind = 8 ) MEAN, the average of the boundary values, used 
 !    to initialize the values of the solution in the interior.
 !
-!    Local, real ( kind = 8 ) U(M,N), the solution at the previous iteration.
+!    Local, real ( kind = 8 ), allocatable :: U(:,:), the solution at the previous iteration.
 !
-!    Local, real ( kind = 8 ) W(M,N), the solution computed at the latest 
+!    Local, real ( kind = 8 ) T(M,N), the solution computed at the latest 
 !    iteration.
+!
+!    Local, integer ( kind = 4 ) I, J,  the loop indices.
 !
 
   implicit none

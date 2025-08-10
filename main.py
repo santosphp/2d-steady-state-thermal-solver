@@ -1,36 +1,20 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from solver import solver
+from heated_plate import heated_plate_mod
 
-def uniform_grid(L, N):
-    """Return a uniform mesh x on [0, L]."""
-    return np.linspace(0, L, N)
+m, n = 200, 200
+top, bottom = 100.0, 0.0
+left, right = 75.0, 50.0
+tol = 1e-4
 
-def stretched_grid(L, N, power=1.5):
-    """Return a power‐law stretched mesh x on [0, L]."""
-    lin = np.linspace(0, L, N)
-    return lin**power * L / (L**power)
+T = np.zeros((m, n), order='F', dtype=np.float64)
 
-def main():
-    L = 1   # meters
-    N = 20  # points
+T = heated_plate_mod.heated_plate_solver(m, n, top, bottom, left, right, tol)
 
-    # Scenario 1: Basic uniform case
-    x = uniform_grid(L, N)
-    kappa = np.ones(N)
-    T = solver.solve_system(x, kappa, 80, -20, N)
-
-    plt.figure()
-    plt.plot(x, T, 'o-')
-    plt.title(f"Uniform case\nBCs: 80C | -20C")
-    plt.xlabel('Position (m)')
-    plt.ylabel('Temperature (K)')
-    plt.axvline(x=1/2, color='r', linestyle='--', label='Midpoint')
-    plt.legend()
-    plt.grid(True)
-    plt.savefig('scenario1.png')
-    plt.close()
-
-if __name__ == "__main__":
-    main()
+plt.imshow(T, origin='lower', cmap='hot', extent=[0,1,0,1])
+plt.colorbar(label='Temperature')
+plt.title('2D Steady-State Heat Distribution')
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.show()
 

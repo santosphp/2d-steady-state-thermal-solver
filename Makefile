@@ -1,15 +1,13 @@
-FC = gfortran
 F2PY = f2py
-TARGET = run
+PY = python3
+SRC = heated_plate_mod.f90
+MOD = heated_plate
 
-all: $(TARGET)
+all: $(MOD).so
+	$(PY) main.py
 
-solver.so: solver.f90
-	$(F2PY) -c solver.f90 -m solver
-
-run: solver.so
-	python3 main.py
+$(MOD).so: $(SRC)
+	$(F2PY) -c $< -m $(MOD)
 
 clean:
-	rm -f solver*.so
-
+	rm -f $(MOD)*.so *.mod
