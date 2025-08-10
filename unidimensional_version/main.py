@@ -28,8 +28,7 @@ def main():
     plt.axvline(x=1/2, color='r', linestyle='--', label='Midpoint')
     plt.legend()
     plt.grid(True)
-    plt.savefig('scenario1.png')
-    plt.close()
+    plt.show()
 
 if __name__ == "__main__":
     main()
