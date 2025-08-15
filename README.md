@@ -36,9 +36,12 @@ Este documento focará na versão principal (2D). Os arquivos relevantes no dire
 ### Requisitos
 - Python3
 - Compilador gfortran
-- Meson (necessário para o f2py)
-- f2py (para integração Fortran-Python)
-- Numpy
+
+### Instalando depêndencias
+As depêndencias python podem ser instaladas através do arquivo requirements.txt com o seguinte comando:
+```bash
+pip install -r requirements.txt
+```
 
 ### Instruções de Compilação
 ```bash
